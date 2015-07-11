@@ -11,6 +11,7 @@ class Game():
         self.character = None
 
     def print_map(self):
+        '''printing the map'''
         self.update_location()
         for row in range(maps.ROWS):
             line = ""
@@ -20,6 +21,7 @@ class Game():
         print()
 
     def update_location(self):
+        '''Updating the location of the player in the map'''
         new_map = ""
         for _ in range(50):
             if _ == self.player_location:
@@ -31,6 +33,7 @@ class Game():
         self.map = new_map
 
     def move_right(self):
+        '''Move to the right square if it is available and not blocked'''
         if ((maps.COLUMNS - 1) - self.player_location) % maps.COLUMNS == 0\
         and self.player_location is not 0:
             return False
@@ -43,6 +46,7 @@ class Game():
         return True
 
     def move_left(self):
+        '''Move to the left square if it is available and not blocked'''
         if self.player_location % maps.COLUMNS == 0:
             return False
 
@@ -54,6 +58,7 @@ class Game():
         return True
 
     def move_up(self):
+        '''Move to the up square if it is available and not blocked'''
         if self.player_location < maps.COLUMNS:
             return False
 
@@ -65,6 +70,7 @@ class Game():
         return True
 
     def move_down(self):
+        '''Move to the down square if it is available and not blocked'''
         if self.player_location >= (maps.ROWS-1) * maps.COLUMNS:
             return False
 
@@ -79,6 +85,7 @@ class Game():
         return input(message + "\nEnter here: ")
 
     def select_weapon(self, weapon=None):
+        '''Choosing your weapon'''
         if weapon is not None:
             self.character.equip_weapon(weapon)
             return
@@ -102,6 +109,7 @@ class Game():
             self.character.equip_weapon(Weapon(10, 10, 10, 10))
 
     def select_character(self, character=None, weapon=None):
+        '''Selecting your character'''
         if character is not None:
             self.character = character
             self.select_weapon(weapon)
@@ -121,6 +129,7 @@ class Game():
         self.select_weapon()
 
     def play(self, is_test=False):
+        '''Playing the game untill you die or reach the treasure'''
         turn_description = "MOVE! Press: " + \
             "\nw - up\na - left\ns - down\nd - right\n"
 
@@ -172,6 +181,3 @@ class Game():
 
         return "You won!" if self.character.is_alive() else "You lost!"
 
-#
-#g = Game(maps.MAP)
-#g.play()

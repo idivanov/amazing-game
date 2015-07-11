@@ -14,6 +14,7 @@ class Battle():
             "Enter your choice for this turn(1/2/3): ")
 
     def start(self):
+        '''Starting the battle. It ends when either character or bot is dead'''
         character_dmg = 0
         bot_dmg = 0
 
@@ -52,6 +53,7 @@ class Battle():
             print ("------------\n\n")
 
     def result(self):
+        '''returning the winner of the battle'''
         if self.character.is_alive():
             return "{} wins\n".format(self.character.name)\
              + self.character.current_health()

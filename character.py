@@ -2,6 +2,7 @@ from weapon import *
 
 
 class Character():
+    '''Class representing your character'''
     def __init__(self, name, hit_points, attack_power,
                  spell_power, armor, magic_resist):
         self.name = name
@@ -66,6 +67,7 @@ class Paladin(Character):
         return 0
 
     def bonus(self):
+        '''Activating your bonus - dealing double damage in your next 3 turns'''
         self.bonus_turns = 3
         return self.weapon.attack_power
 
@@ -87,6 +89,7 @@ class Warrior(Character):
         return 0
 
     def bonus(self):
+        '''Stunning your enemy'''
         return "stun"
 
 
@@ -104,4 +107,5 @@ class Mage(Character):
         return 0
 
     def bonus(self):
+        '''silencing your enemy'''
         return "silence"

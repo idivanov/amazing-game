@@ -1,5 +1,5 @@
 class Weapon():
-
+    '''Class, representing weapons in game'''
     def __init__(self, hp_bonus, attack_power, spell_power, armor):
         self.hp_bonus = hp_bonus
         self.attack_power = attack_power

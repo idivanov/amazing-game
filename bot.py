@@ -19,6 +19,7 @@ class Bot():
 
 
 class Warlock(Bot):
+    '''Spell using enemy'''
     def __init__(self):
         super().__init__(50, 20)
         self.type = "Warlock"
@@ -43,6 +44,7 @@ class Warlock(Bot):
 
 
 class Berserker(Bot):
+    '''Melee using enemy'''
     def __init__(self):
         super().__init__(100, 20)
         self.type = "Berserker"
@@ -67,6 +69,7 @@ class Berserker(Bot):
 
 
 class Boss(Bot):
+    '''Final enemy'''
     def __init__(self):
         super().__init__(1000, 1)
         self.type = "Boss"
