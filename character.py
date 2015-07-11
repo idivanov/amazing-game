@@ -1,9 +1,9 @@
-import weapon
+from weapon import *
 
 
 class Character():
     def __init__(self, name, hit_points, attack_power,
-                 spell_power, armor, magic_resist, weapon):
+                 spell_power, armor, magic_resist):
         self.name = name
         self.hit_points = hit_points
         self.health = hit_points
@@ -11,14 +11,19 @@ class Character():
         self.spell_power = spell_power
         self.armor = armor
         self.magic_resist = magic_resist
-        self.weapon = None
+        self.weapon = Weapon(0, 0, 0, 0)
 
-    def damage_taken(self, hit, is_spell):
+    def damage_taken(self, hit):
         taken = self.health
-        if is_spell is True:
-            self.health = self.health - (hit - self.magic_resist)
-        else:
-            self.health = self.health - (hit - self.armor)
+        if hit[1] is "magic":
+            if hit[0] >= self.magic_resist:
+                self.health = self.health - (hit[0] - self.magic_resist)
+        if hit[1] is "melee":
+            if hit[0] >= self.armor:
+                self.health = self.health - (hit[0] - self.armor)
+        if hit[1] is not "magic" and hit[1] is not "melee":
+            self.health = self.health - hit[0]
+
         print ("{} takes {} dmg!".format(self.name, taken-self.health))
 
     def strike(self):
@@ -35,31 +40,39 @@ class Character():
 
     def equip_weapon(self, weapon):
         self.weapon = weapon
+        self.hit_points += self.weapon.hp_bonus
+        self.health = self.hit_points
+
+    def current_health(self):
+        return "{} has {}/{} health".format(self.name,
+            self.health, self.hit_points)
 
 
 class Paladin(Character):
     def __init__(self, name):
-        super().__init__(name, 100, 10, 10, 20, 10, None)
+        super().__init__(name, 100, 10, 10, 20, 10)
         self.bonus_turns = 0
 
     def strike(self):
         if self.bonus_turns > 0:
             self.bonus_turns -= 1
-            return (self.attack_power + self.weapon.attack_power) * 1.5
+            return (self.attack_power + self.weapon.attack_power) * 2
         return self.attack_power + self.weapon.attack_power
 
     def heal(self):
-        self.health += 10 + spell_power/2
+        self.health += 10 + self.spell_power/2
         if self.health > self.hit_points:
             self.health = self.hit_points
+        return 0
 
     def bonus(self):
-        self.bonus_turns = 2
+        self.bonus_turns = 3
+        return self.weapon.attack_power
 
 
 class Warrior(Character):
     def __init__(self, name):
-        super().__init__(name, 120, 15, 0, 30, 5, None)
+        super().__init__(name, 120, 15, 0, 30, 5)
 
     def strike(self):
         return self.attack_power + self.weapon.attack_power
@@ -71,6 +84,7 @@ class Warrior(Character):
         self.magic_resist += 2
         if self.health > self.hit_points:
             self.health = self.hit_points
+        return 0
 
     def bonus(self):
         return "stun"
@@ -78,15 +92,16 @@ class Warrior(Character):
 
 class Mage(Character):
     def __init__(self, name):
-        super().__init__(name, 85, 0, 20, 10, 20, None)
+        super().__init__(name, 85, 0, 20, 10, 20)
 
     def strike(self):
-        return self.spell_power + weapon.spell_power
+        return self.spell_power + self.weapon.spell_power
 
     def heal(self):
-        self.health += spell_power/2
+        self.health += self.spell_power/2
         if self.health > self.hit_points:
             self.health = self.hit_points
+        return 0
 
     def bonus(self):
         return "silence"
